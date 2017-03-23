@@ -1,24 +1,45 @@
+var fs = require('fs')
+var path = require('path')
+
+module.exports.loadDb = function (dbFile, cb) {
+  fs.readFile(dbFile, 'utf8', function (err, res) {
+    if (err) { return cb(err) }
+
+    var input
+    try {
+      input = res;
+      input = input.replace(/\n/g,' ');
+      input = input.split(' ');
+      let result = [];
+      input.map((val)=>{
+        if(val !== ''){
+          result.push(parseInt(val));
+        }
+      });
+      input = result;
+      console.log('input: ',input);
+    } catch (e) {
+      console.log('error: ',err);
+    }
+    cb(input);
 
 
-//declare input variable:
-let input = "5 3 188930 194123 201345 154243 154243";
+    // return cb(null, { n: dbFile, k: messages, homePrices: })
+  })
+}
 
-let challenge_1 = (input) => {
-
+module.exports.challenge_1 = function(homePrices){
+let n = homePrices.shift();
+console.log('n: ',n);
+let k = homePrices.shift();
+console.log('k: ',k);
 // declare output for function:
   let result=[];
-
-  //convert input file into workable javascript data types -- 2 integer variables and an array:
-  console.log('input: ',input);
-  input = input.split('');
-  const nums = input[0].split('');
-  let homePrices = input[1];
-  homePrices = homePrices.split(' ');
-  homePrices = homePrices.map((val)=>{
-    return parseInt(val);
-  });
-  const n = parseInt(nums[0]);
-  const k = parseInt(nums[2]);
+// declare input for function:
+  //
+  // let homePrices = [188930, 194123, 201345, 154243, 154243]
+  // const n = 5
+  // const k = 3
 
 //define a function that calculates the net increasing/decreasing subranges in a window of values:
 
@@ -63,10 +84,3 @@ let challenge_1 = (input) => {
   console.log('result: ',result);
   return result;
 }
-challenge_1(input);
-//get input text from text file:
-// $.get('./input.txt',(val)=>{
-//   input = val;
-// //call the main function:
-//   challenge_1(val);
-// });
